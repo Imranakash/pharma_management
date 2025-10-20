@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- list View -->
+    <record id="view_pharma_representative_list" model="ir.ui.view">
+        <field name="name">pharma.representative.list</field>
+        <field name="model">pharma.representative</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="region"/>
+                <field name="target_value"/>
+                <field name="total_sales"/>
+                <field name="achievement_rate"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_pharma_representative_form" model="ir.ui.view">
+        <field name="name">pharma.representative.form</field>
+        <field name="model">pharma.representative</field>
+        <field name="arch" type="xml">
+            <form string="Medical Representative">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="employee_id"/>
+                        <field name="region"/>
+                        <field name="phone"/>
+                    </group>
+                    <group>
+                        <field name="target_value"/>
+                        <field name="total_sales" modifiers="{'readonly': True}"/>
+                        <field name="achievement_rate" modifiers="{'readonly': True}"/>
+                        <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_pharma_representative_kanban" model="ir.ui.view">
+        <field name="name">pharma.representative.kanban</field>
+        <field name="model">pharma.representative</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="region">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <strong><field name="name"/></strong>
+                            <div>Employee ID: <field name="employee_id"/></div>
+                            <div>Region: <field name="region"/></div>
+                            <div>Target: <field name="target_value"/></div>
+                            <div>Total Sales: <field name="total_sales"/></div>
+                            <div>Achievement: <field name="achievement_rate"/>%</div>
+                            <div>Status: <field name="state"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+<!--    Search-->
+    <record id="view_pharma_representative_search" model="ir.ui.view">
+    <field name="name">pharma.representative.search</field>
+    <field name="model">pharma.representative</field>
+    <field name="arch" type="xml">
+        <search string="Search Representatives">
+            <field name="name"/>
+            <field name="region"/>
+            <field name="state"/>
+
+            <filter string="Region" name="filter_by_region" domain="[]" context="{'group_by':'region'}"/>
+            <filter string="Status" name="filter_by_status" domain="[]" context="{'group_by':'state'}"/>
+        </search>
+    </field>
+</record>
+
+
+    <!-- Action -->
+    <record id="action_pharma_representative" model="ir.actions.act_window">
+        <field name="name">Medical Representatives</field>
+        <field name="res_model">pharma.representative</field>
+        <field name="view_mode">kanban,list,form</field>
+    </record>
+
+
+</odoo>

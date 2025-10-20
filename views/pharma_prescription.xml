@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Prescription List View -->
+    <record id="view_pharma_prescription_list" model="ir.ui.view">
+        <field name="name">pharma.prescription.list</field>
+        <field name="model">pharma.prescription</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="doctor_id"/>
+                <field name="representative_id"/>
+                <field name="prescription_date"/>
+                <field name="total_amount"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Prescription Form View -->
+    <record id="view_pharma_prescription_form" model="ir.ui.view">
+        <field name="name">pharma.prescription.form</field>
+        <field name="model">pharma.prescription</field>
+        <field name="arch" type="xml">
+            <form string="Prescription">
+                <header>
+                    <!-- Odoo 18: Use modifiers instead of states -->
+                    <button name="action_confirm" type="object" string="Confirm"
+                            modifiers="{'invisible': [('state','!=','draft')]}"/>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            modifiers="{'invisible': [('state','not in',('draft','confirmed'))]}"/>
+                    <button name="action_reset_draft" type="object" string="Reset to Draft"
+                            modifiers="{'invisible': [('state','!=','cancelled')]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,cancelled"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="doctor_id"/>
+                        <field name="representative_id"/>
+                        <field name="prescription_date"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Medicines">
+                            <field name="medicine_line_ids">
+                                <list editable="bottom">
+                                    <field name="medicine_id"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="subtotal" modifiers="{'readonly': True}"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <group>
+                        <field name="total_amount" modifiers="{'readonly': True}"/>
+                    </group>
+                </sheet>
+                <!-- Chatter -->
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+<!--    Search-->
+    <record id="view_pharma_prescription_search" model="ir.ui.view">
+    <field name="name">pharma.prescription.search</field>
+    <field name="model">pharma.prescription</field>
+    <field name="arch" type="xml">
+        <search string="Search Prescriptions">
+            <field name="prescription_date"/>
+            <field name="representative_id"/>
+
+            <filter string="Today" name="filter_today" domain="[('prescription_date','=',context_today().strftime('%%Y-%%m-%%d'))]"/>
+            <filter string="This Month" name="filter_this_month" domain="[('prescription_date','>=',(context_today().replace(day=1)).strftime('%%Y-%%m-%%d'))]"/>
+            <filter string="By Representative" name="filter_by_representative" domain="[]" context="{'group_by':'representative_id'}"/>
+        </search>
+    </field>
+</record>
+
+
+
+    <!-- Action -->
+    <record id="action_pharma_prescription" model="ir.actions.act_window">
+        <field name="name">Prescriptions</field>
+        <field name="res_model">pharma.prescription</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

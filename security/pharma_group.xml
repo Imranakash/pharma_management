@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="group_pharma_manager" model="res.groups">
+            <field name="name">Pharma Manager</field>
+        </record>
+
+        <record id="group_medical_representative" model="res.groups">
+            <field name="name">Medical Representative</field>
+        </record>
+
+
+    </data>
+</odoo>

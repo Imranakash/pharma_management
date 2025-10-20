@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Medical Representative: Only see own prescriptions -->
+        <record id="prescription_rule_medical_rep" model="ir.rule">
+            <field name="name">Medical Representative Own Prescriptions</field>
+            <field name="model_id" ref="model_pharma_prescription"/>
+            <field name="domain_force">[('representative_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_medical_representative'))]"/>
+        </record>
+
+        <!-- Medical Representative: Only see prescription lines of own prescriptions -->
+        <record id="prescription_line_rule_medical_rep" model="ir.rule">
+            <field name="name">Medical Representative Own Prescription Lines</field>
+            <field name="model_id" ref="model_pharma_prescription_line"/>
+            <field name="domain_force">[('prescription_id.representative_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_medical_representative'))]"/>
+        </record>
+
+        <!-- Medical Representative: Only see assigned doctors -->
+        <record id="doctor_rule_medical_rep" model="ir.rule">
+            <field name="name">Medical Representative Assigned Doctors</field>
+            <field name="model_id" ref="model_pharma_doctor"/>
+            <field name="domain_force">[('id','in',user.employee_ids.mapped('doctor_ids').ids)]</field>
+            <field name="groups" eval="[(4, ref('group_medical_representative'))]"/>
+        </record>
+
+    </data>
+</odoo>
