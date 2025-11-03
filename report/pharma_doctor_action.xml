@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!-- Report Action -->
+        <!-- PDF Report Action -->
         <record id="report_pharma_doctor" model="ir.actions.report">
             <field name="name">Doctor Report</field>
             <field name="model">pharma.doctor</field>
